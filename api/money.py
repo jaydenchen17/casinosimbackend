@@ -2,12 +2,13 @@ from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource 
 from flask_cors import CORS
 import requests  
+from model.moneys import *
 
-chat_api = Blueprint('chat_api', __name__,
+money_api = Blueprint('money_api', __name__,
             url_prefix='/api/money')
-api = Api(chat_api)
+api = Api(money_api)
 
-CORS(chat_api, resources={r"/api/money/create": {"origins": "http://127.0.0.1:8987"}})
+CORS(money_api, resources={r"/api/money/create": {"origins": "http://127.0.0.1:8987"}})
 
 chat_data = []
 
@@ -16,31 +17,13 @@ class ChatAPI:
         def get(self):
             response = jsonify({"Connection Test": "Successfully connected to backend!"})
             return response
-        
-    class _Create(Resource):
-        def get(self):
-            return jsonify({"message": "This is the GET request for _Create"})
-
-        def post(self):
-            data = request.json
-            chat_data.append(data)
-            return jsonify({"message": "Data stored successfully!"})
-
-
-    class _Read(Resource):
-        def get(self):
-            return jsonify(chat_data)
-
-
-api.add_resource(ChatAPI._Create, '/create')
-api.add_resource(ChatAPI._Read, '/read')
+       
 api.add_resource(ChatAPI._Test, '/test')
-
 
 if __name__ == "__main__":
     server = "http://127.0.0.1:8987" # run local
     # server = 'https://chat.stu.nighthawkcodingsociety.com'  # Update with your server URL
-    url = server + "/api/chats"
+    url = server + "/api/money"
     responses = []
 
     # Simulate sending data to the chat API
