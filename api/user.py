@@ -43,7 +43,7 @@ class UserAPI:
             # convert to date type
             if dob is not None:
                 try:
-                    uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
+                    uo.dob = datetime.strptime(dob, '%m-%d-%Y').date()
                 except:
                     return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
             
@@ -116,9 +116,11 @@ class UserAPI:
                         "error": str(e),
                         "data": None
                 }, 500
-
+    class _Read(Resource):
+        def get(self):
+            return jsonify(users=[user.read() for user in User.query.all()])
             
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
     api.add_resource(_Security, '/authenticate')
-    
+    api.add_resource(_Read, '/read')
